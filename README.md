@@ -1,2 +1,2 @@
-# XY-Plotter-SoftPLC-and-Ignition
+# xy-plotter-softplc-ignition
 Open-source automation project for an XY plotter.
