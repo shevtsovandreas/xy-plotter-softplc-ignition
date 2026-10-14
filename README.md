@@ -2,9 +2,7 @@
 Open-source automation project for an XY plotter.
 
 **Industrial automation demonstrator built around Raspberry Pi 5, CODESYS SoftPLC, Ignition Perspective, PostgreSQL, and an ESP32 motion controller.**
-
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/b582471c-d8b2-4246-b3ae-8f639de39e9a" />
-
 This repository documents the next stage of my XY Plotter automation project: replacing a traditional Siemens PLC and dedicated HMI architecture with an integrated, Linux-based edge control platform.
 
 The objective is not simply to operate an XY plotter, but to explore how **PLC-based machine coordination, SCADA, drawing management, diagnostics, and historical data** can work together on a compact industrial-style automation platform.
@@ -14,9 +12,7 @@ The objective is not simply to operate an XY plotter, but to explore how **PLC-b
 ## What's New
 
 The original system used a Siemens S7-1200 PLC, KTP700 Basic HMI, and a separate PC workflow for preparing and transferring drawing data.
-
 <img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/68e5d9f8-3564-4d0e-a33c-1f2855bb5218" />
-
 The updated system brings machine coordination, operator visualization, and data storage together on a **Raspberry Pi 5**:
 
 | Layer | Technology | Responsibility |
@@ -37,9 +33,7 @@ The **Raspberry Pi 5** hosts CODESYS SoftPLC, Ignition Gateway, and PostgreSQL.
 - **Browser ↔ Ignition:** HTTP/HTTPS for the Perspective operator interface.
 
 The software PLC manages the machine sequence, while time-critical motion execution remains on the ESP32. The ESP32 uses a **256-point circular buffer**, Bresenham XY interpolation, and a **10 µs timer interrupt** for STEP/DIR pulse generation.
-
 <img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/37fafa71-870c-4036-83be-4fb18f5d770e" />
-
 ## Ignition Perspective Features
 
 The SCADA project is organized into dedicated operator views:
