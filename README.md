@@ -33,7 +33,7 @@ The **Raspberry Pi 5** hosts CODESYS SoftPLC, Ignition Gateway, and PostgreSQL.
 - **Browser ↔ Ignition:** HTTP/HTTPS for the Perspective operator interface.
 
 The software PLC manages the machine sequence, while time-critical motion execution remains on the ESP32. The ESP32 uses a **256-point circular buffer**, Bresenham XY interpolation, and a **10 µs timer interrupt** for STEP/DIR pulse generation.
-<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/37fafa71-870c-4036-83be-4fb18f5d770e" />
+<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/6c099448-76c2-4308-8a0c-51acc6c810cc" />
 ## Ignition Perspective Features
 
 The SCADA project is organized into dedicated operator views:
