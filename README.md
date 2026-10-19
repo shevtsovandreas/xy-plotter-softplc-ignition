@@ -46,7 +46,7 @@ The SCADA project is organized into dedicated operator views:
 | **I/O** | Machine signals, controller status, and diagnostic information |
 | **Alarms** | Alarm display and event history |
 | **History** | Drawing execution records and results |
-
+<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/d915dd1d-3122-4a1f-8bde-6a604bf29f76" />
 ### Drawing Management
 
 Drawings are managed through the SCADA application rather than a separate PC-side transfer tool. The database stores drawing metadata and parameters alongside G-code and SVG representations. Operators can maintain a catalog of drawings and select the one to execute.
