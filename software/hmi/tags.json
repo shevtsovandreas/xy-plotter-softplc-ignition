@@ -1,0 +1,524 @@
+{
+  "name": "",
+  "tagType": "Provider",
+  "tags": [
+    {
+      "name": "FB100_Logic_Call",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Int8",
+          "name": "PlcHeartbeat",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.FB100_Logic_Call.PlcHeartbeat",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "EspTcpErr",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.FB100_Logic_Call.FB200_TCP_ESP.Err",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "EspCommLost",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.FB100_Logic_Call.EspCommLost",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "FromEspRcvDone",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.FB100_Logic_Call.FB200_TCP_ESP.RcvNdr",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ToEspSndDone",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.FB100_Logic_Call.FB200_TCP_ESP.SndDone",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "PLC_Command",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Int4",
+          "name": "CommandCoord_Y",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandCoord_Y",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandContourNum",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandContourNum",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandPointNum",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandPointNum",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandPointFlags",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandPointFlags",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandStw",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandStw",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "value": 2,
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandSpeed",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandSpeed",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "CommandCoord_X",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandCoord_X",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "Memory_tags",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "name": "DrawingId",
+          "tagType": "AtomicTag",
+          "value": 6,
+          "valueSource": "memory"
+        },
+        {
+          "dataType": "String",
+          "executionMode": "FixedRate",
+          "executionRate": 1000,
+          "expression": "if(timeBetween({[~]FB100_Logic_Call/PlcHeartbeat.Timestamp}, addSeconds(now(), -2), now()), \"RUN\", \"STOPPED\")",
+          "formatString": "#,##0.##",
+          "name": "PlcStatus",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "dataType": "String",
+          "executionMode": "FixedRate",
+          "expression": "if(!{[~]FB100_Logic_Call/EspCommLost}, \"ONLINE\", \"OFFLINE\")",
+          "name": "EspOnline",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "dataType": "String",
+          "name": "DrawingExecutionName",
+          "tagType": "AtomicTag",
+          "value": "Lancia Delta 1980",
+          "valueSource": "memory"
+        },
+        {
+          "name": "DrawingExecutionId",
+          "tagType": "AtomicTag",
+          "value": 41,
+          "valueSource": "memory"
+        },
+        {
+          "dataType": "String",
+          "expression": "if(isGood({[~]ESP32_Response/ResponseZswByte2}), if({[~]DB/AutoCmd}, \"AUTO\", \"MANUAL\"), \"N/A\")",
+          "name": "Mode",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "dataType": "String",
+          "executionMode": "FixedRate",
+          "expression": "if({[~]FB100_Logic_Call/PlcHeartbeat.Quality} \u003d \"Good\", \"ONLINE\", \"OFFLINE\")",
+          "name": "PlcOnline",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "name": "PlcToEspCycle",
+          "tagType": "AtomicTag",
+          "value": 100,
+          "valueSource": "memory"
+        },
+        {
+          "dataType": "String",
+          "executionMode": "FixedRate",
+          "expression": "if({[.]PlcStatus} !\u003d \"RUN\", \"PLC STOP\", if({[.]ErrorCode} \u003e 0, \"FAULT\", if({[~]DB/EstopCmd}, \"ESTOP\", if({[~]DB/StopCmd}, \"STOPPED\", if({[~]DB/AutoCmd}, \"RUNNING\", \"IDLE\")))))",
+          "name": "PlotterState",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "expression": "if({[~]FB100_Logic_Call/EspCommLost}, \"3500\", {[~]ESP32_Response/ResponseErrorCode})",
+          "name": "ErrorCode",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        },
+        {
+          "name": "EspToPlcCycle",
+          "tagType": "AtomicTag",
+          "value": 101,
+          "valueSource": "memory"
+        },
+        {
+          "dataType": "String",
+          "expression": "if(isGood({[~]ESP32_Response/ResponseZswByte2}), if(getBit({[~]ESP32_Response/ResponseZswByte2}, 1) \u0026\u0026 getBit({[~]ESP32_Response/ResponseZswByte2}, 2), \"REACHED\", \"NOT REACHED\"), \"N/A\")",
+          "name": "Homed",
+          "tagType": "AtomicTag",
+          "valueSource": "expr"
+        }
+      ]
+    },
+    {
+      "name": "ESP32_Command",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Int4",
+          "name": "CommandStw",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.SND_ESP_Buffer.TCP_ESP_SND.CommandStw",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "ESP32_Response",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Int4",
+          "name": "ResponseNumExpected",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseNumExpected",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseCoord_Y",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseCoord_Y",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseCoord_X",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseCoord_X",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseCurrPoint",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseCurrPoint",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseLastContDone",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseLastContDone",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseLastContRcv",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseLastContRcv",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "ResponseZswByte2",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseZswByte2",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "value": 9,
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponsePointsInBuffer",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponsePointsInBuffer",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "ResponseErrorCode",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseErrorCode",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "ResponseZswByte1",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseZswByte1",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "value": 4,
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "ResponseDrawingState",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.RCV_ESP_Buffer.TCP_ESP_RCV.ResponseDrawingState",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "DB",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Boolean",
+          "name": "MoveCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.MoveCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "ManMoveSpeed",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveSpeed",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveNEast",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveNEast",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "TargetY",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.TargetY",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveWest",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveWest",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "HomeCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.HomeCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveEast",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveEast",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveSWest",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveSWest",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "StopCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.StopCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "RcvDataFromPC",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.RcvDataFromPC",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "CleanCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.CleanCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "TargetMoveSpeed",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.TargetMoveSpeed",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveSEast",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveSEast",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "MoveToTargetCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.MoveToTargetCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveNorth",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveNorth",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "EstopCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.EstopCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveNWest",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveNWest",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "TargetPenDn",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.TargetPenDn",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "AutoCmd",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.AutoCmd",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManualPenDn",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManualPenDn",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Boolean",
+          "name": "ManMoveSouth",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.ManMoveSouth",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int2",
+          "name": "TargetX",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.DB.TargetX",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    },
+    {
+      "name": "_types_",
+      "tagType": "Folder"
+    },
+    {
+      "name": "Drawing",
+      "tagType": "Folder",
+      "tags": [
+        {
+          "dataType": "Int4",
+          "name": "TotalNumbContours",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.Drawing.TotalNumbContours",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        },
+        {
+          "dataType": "Int4",
+          "name": "TotalNumbPoints",
+          "opcItemPath": "nsu\u003dCODESYSSPV3/3S/IecVarAccess;s\u003d|var|CODESYS Control for Raspberry Pi 64 SL.Application.Drawing.TotalNumbPoints",
+          "opcServer": "CodesysOpcUa",
+          "tagType": "AtomicTag",
+          "valueSource": "opc"
+        }
+      ]
+    }
+  ]
+}
