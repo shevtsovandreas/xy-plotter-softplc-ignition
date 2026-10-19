@@ -83,6 +83,7 @@ Database initialization and reference catalog management are implemented through
 
 ## Communication Architecture
 <img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/ab554baf-c962-4584-8fac-8d952d1d45f8" />
+
 | Source | Destination | Protocol | Data |
 |---|---|---|---|
 | Browser | Ignition Gateway | HTTP/HTTPS | Operator interface |
