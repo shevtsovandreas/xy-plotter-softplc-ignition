@@ -90,6 +90,12 @@ For the **original Siemens PLC/HMI implementation** and basic project background
 
 This repository is dedicated to the updated **Raspberry Pi 5 + CODESYS + Ignition + PostgreSQL** architecture.
 
+## Video Demonstrations
+
+Video demonstrations of the XY Plotter system, including automatic drawing execution, Ignition Perspective HMI operation, manual control, I/O monitoring, alarms, and execution history.
+
+**YouTube Playlist:** [XY Plotter | Ignition SCADA & CODESYS SoftPLC]([YOUR_PLAYLIST_URL](https://youtube.com/playlist?list=PLIazfT3GoNm0&si=kH6dBI53U73QOxEo))
+
 ## Project Status
 
 🚧 Active development and documentation.
