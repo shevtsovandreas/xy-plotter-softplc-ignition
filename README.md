@@ -94,7 +94,7 @@ This repository is dedicated to the updated **Raspberry Pi 5 + CODESYS + Ignitio
 
 Video demonstrations of the XY Plotter system, including automatic drawing execution, Ignition Perspective HMI operation, manual control, I/O monitoring, alarms, and execution history.
 
-**YouTube Playlist:** [XY Plotter | Ignition SCADA & CODESYS SoftPLC]((https://youtube.com/playlist?list=PLIazfT3GoNm0&si=kH6dBI53U73QOxEo)
+**YouTube Playlist:** [XY Plotter | Ignition SCADA & CODESYS SoftPLC](https://youtube.com/playlist?list=PLIazfT3GoNm0&si=kH6dBI53U73QOxEo)
 
 ## Project Status
 
