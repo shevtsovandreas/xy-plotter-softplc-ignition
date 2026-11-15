@@ -84,9 +84,7 @@ This version explores:
 
 ## Previous Version
 
-For the **original Siemens PLC/HMI implementation** and basic project background, visit:
-
-**[shevtsovandreas/xy-plotter-automation](https://github.com/shevtsovandreas/xy-plotter-automation)**
+For the **original Siemens PLC/HMI implementation** and basic project background, visit: **[shevtsovandreas/xy-plotter-automation](https://github.com/shevtsovandreas/xy-plotter-automation)**
 
 This repository is dedicated to the updated **Raspberry Pi 5 + CODESYS + Ignition + PostgreSQL** architecture.
 
