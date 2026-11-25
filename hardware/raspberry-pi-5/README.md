@@ -11,6 +11,7 @@ The platform combines three main software components on a single Linux-based dev
 - **PostgreSQL** — storage of drawings, G-code, SVG data, alarm and signal catalogs, and execution history.
 
 The ESP32 remains a separate motion controller responsible for real-time step generation and motor control.
+The Digital Twin version additionally uses Nginx to serve the 3D visualization application and provide reverse proxy access to Ignition Gateway.
 
 ## Hardware Specifications
 
@@ -40,7 +41,7 @@ The ESP32 remains a separate motion controller responsible for real-time step ge
 | CODESYS Runtime SDK | 3.5.22.20 | Runtime foundation |
 | Ignition Gateway | 8.3.10 | HMI, visualization, and application logic |
 | PostgreSQL | 17.11 | Relational database |
-| Nginx | Installed | HTTP web server / proxy component |
+| Nginx | Installed | Static file hosting and reverse proxy for Ignition |
 
 ## System Architecture
 
@@ -52,6 +53,9 @@ The Raspberry Pi hosts the PLC runtime, Ignition Gateway, and PostgreSQL databas
 | Ignition ↔ PostgreSQL | JDBC | Drawing storage, configuration, and history |
 | CODESYS ↔ ESP32 | TCP/IP | Motion commands and controller feedback |
 | Browser ↔ Ignition | HTTP | Access to Perspective HMI |
+| Browser ↔ Nginx | HTTP | Perspective and Digital Twin access |
+| Nginx ↔ Ignition | HTTP / WebSocket | Reverse proxy communication |
+| Digital Twin ↔ WebDev (via Nginx) | HTTP / JSON | Live machine feedback |
 
 CODESYS manages the control sequence and machine interlocks, while the ESP32 executes time-critical motion operations using a circular point buffer and deterministic STEP/DIR pulse generation.
 
@@ -82,7 +86,7 @@ The following TCP ports were observed on the Raspberry Pi:
 | Port | Service | Description |
 |---|---|---|
 | 22 | SSH | Remote terminal access |
-| 80 | Nginx | HTTP server |
+| 80 | Nginx | Static file hosting and reverse proxy access |
 | 4840 | CODESYS OPC UA | PLC data exchange with Ignition |
 | 5432 | PostgreSQL | Local database connection |
 | 8060 | Ignition Gateway | Additional Gateway listener |
@@ -129,6 +133,13 @@ Check PostgreSQL clusters:
 pg_lsclusters
 ```
 
+Check Nginx service status and validate its configuration:
+
+```bash
+sudo systemctl status nginx
+sudo nginx -t
+```
+
 ## Installation Paths
 
 | Component | Path |
@@ -139,6 +150,18 @@ pg_lsclusters
 | Ignition Gateway | `/opt/ignition/` |
 | PostgreSQL data | `/var/lib/postgresql/17/main/` |
 | PostgreSQL logs | `/var/log/postgresql/postgresql-17-main.log` |
+| Nginx configuration | `/etc/nginx/` |
+| Digital Twin application | `/var/www/html/digital-twin/` |
+
+## Digital Twin Hosting
+
+Nginx serves the Digital Twin application from `/var/www/html/digital-twin/` and forwards Ignition requests to `127.0.0.1:8088`.
+
+The Raspberry Pi hosts the application files and provides machine feedback through the Ignition WebDev API.
+
+3D rendering is performed on the client side using Three.js and WebGL in the web browser.
+
+For installation and configuration details, see the [Digital Twin documentation](../digital-twin/README.md).
 
 ## Database
 
