@@ -18,6 +18,9 @@ Time-critical motion control remains on a dedicated ESP32 controller.
 | Database | PostgreSQL 17 | Drawing storage, configuration, alarms, and execution history |
 | Motion controller | ESP32 + W5500 | Real-time motion interpolation and STEP/DIR pulse generation |
 | Operator interface | Web browser | Access to the Perspective application |
+| 3D visualization | Three.js / WebGL | Interactive Digital Twin and live machine visualization |
+| HTTP API | Ignition WebDev | Machine position and pen status data |
+| Web server / Reverse proxy | Nginx | Static file hosting and unified web access |
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/898cdcee-c728-4b0d-9131-5c7fa5ded161" />
 
 ## Control Layers
@@ -91,6 +94,27 @@ Database initialization and reference catalog management are implemented through
 | Ignition | CODESYS | OPC UA | Commands, trajectory data, and machine status |
 | CODESYS | ESP32 | TCP/IP | Motion commands and trajectory points |
 | ESP32 | CODESYS | TCP/IP | Position feedback, buffer status, and error codes |
+
+### 5. Digital Twin — 3D Visualization
+
+The Digital Twin extends the standard 2D SCADA application with an interactive 3D representation of the physical machine.
+
+Its responsibilities include:
+
+- Real-time X/Y axis visualization
+- Pen and servo movement animation
+- Live drawing trajectory visualization
+- Interactive 3D camera control
+
+The application uses Three.js and WebGL to render the 3D model directly in the browser.
+
+Machine feedback is retrieved from Ignition through the WebDev HTTP API.
+
+Nginx serves the 3D application and provides a common web access point for Ignition Perspective and the Digital Twin.
+
+The Digital Twin is a visualization-only component and operates independently of machine control and motion execution.
+
+For more information, see the [Digital Twin documentation](../digital-twin/README.md).
 
 ### Drawing Execution Workflow
 
