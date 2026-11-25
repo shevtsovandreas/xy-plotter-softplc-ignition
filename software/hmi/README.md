@@ -13,7 +13,7 @@ The application communicates with CODESYS SoftPLC through OPC UA and PostgreSQL 
 | File | Description |
 |---|---|
 | `XY_Plotter_Gateway_Ignition-backup-20261018-1830.gwbk` | Full Ignition Gateway backup — standard 2D version |
-| `XY_Plotter_SCADA_20261018183046.zip` | Ignition project export — standard 2D version |
+| `XY_Plotter_SCADA_2026-10-18_1830.zip` | Ignition project export — standard 2D version |
 | `XY_Plotter_SCADA_2026-11-21_1857.zip` | Ignition project export — extended version with 2D and 3D visualization |
 | `tags.json` | Ignition Tag Provider export |
 
