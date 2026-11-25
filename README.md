@@ -71,11 +71,11 @@ The project includes named queries and scripts for alarm catalogs, signal catalo
 
 ## Digital Twin — Interactive 3D Visualization
 
-The project includes an interactive 3D Digital Twin integrated
-into the Ignition Perspective operator interface.
+The project includes an interactive 3D Digital Twin integrated into the Ignition Perspective operator interface.
 
-The Digital Twin uses actual machine feedback to visualize
-the physical XY Plotter in the browser.
+The Digital Twin uses actual machine feedback to visualize the physical XY Plotter in the browser.
+
+<img width="1920" height="1080" alt="Screenshot2" src="https://github.com/user-attachments/assets/398e6f41-f2a5-4073-9153-c38178f49d81" />
 
 ### Features
 
@@ -118,8 +118,6 @@ flowchart LR
 ```
 
 The Digital Twin is used for visualization only and does not send control commands to the PLC or ESP32.
-
-<img width="1920" height="1080" alt="Screenshot2" src="https://github.com/user-attachments/assets/398e6f41-f2a5-4073-9153-c38178f49d81" />
 
 For more information:
 
