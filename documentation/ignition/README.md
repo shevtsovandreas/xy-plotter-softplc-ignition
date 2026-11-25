@@ -13,6 +13,33 @@ Ignition communicates with:
 
 The operator interface is accessible from a web browser without a dedicated HMI panel.
 
+## Application Versions
+
+Two versions of the Ignition Perspective project are available:
+
+### Standard Version — 2D Visualization
+
+The original SCADA application with 2D drawing trajectory
+visualization, machine control, drawing management,
+diagnostics, alarms, and execution history.
+
+### Digital Twin Version — 2D + 3D Visualization
+
+An extended version of the SCADA application that retains
+all standard functionality and adds an interactive 3D
+Digital Twin based on Three.js and WebGL.
+
+The 3D model is synchronized with the physical machine,
+displaying live axis positions, pen movement, servo
+animation, and drawing trajectory.
+
+The Digital Twin version additionally requires the Ignition
+WebDev module and Nginx for web application hosting
+and API integration.
+
+For more information, see the
+[Digital Twin documentation](../digital-twin/README.md).
+
 ## Perspective Application
 
 ### 1. Operator — Automatic Operation
