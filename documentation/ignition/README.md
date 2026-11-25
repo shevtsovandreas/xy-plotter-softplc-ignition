@@ -22,6 +22,7 @@ Two versions of the Ignition Perspective project are available:
 The original SCADA application with 2D drawing trajectory
 visualization, machine control, drawing management,
 diagnostics, alarms, and execution history.
+<img width="1920" height="1076" alt="0_Operator" src="https://github.com/user-attachments/assets/1c71beb4-9701-4722-9ad7-f2153e1ad605" />
 
 ### Digital Twin Version — 2D + 3D Visualization
 
@@ -36,7 +37,7 @@ animation, and drawing trajectory.
 The Digital Twin version additionally requires the Ignition
 WebDev module and Nginx for web application hosting
 and API integration.
-
+<img width="1920" height="1080" alt="Screenshot1" src="https://github.com/user-attachments/assets/e3965997-a3f0-4665-bdb9-b6668019056d" />
 For more information, see the
 [Digital Twin documentation](../digital-twin/README.md).
 
