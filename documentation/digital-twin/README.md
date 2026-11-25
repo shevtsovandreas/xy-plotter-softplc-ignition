@@ -6,6 +6,8 @@ The Digital Twin provides a real-time 3D visualization of the XY Plotter using T
 
 The virtual model is synchronized with the physical machine through Ignition SCADA, displaying the actual axis positions and pen status.
 
+<img width="1920" height="1080" alt="Screenshot2" src="https://github.com/user-attachments/assets/c9a09310-ceaf-42b1-8918-d71418fd1637" />
+
 ## Main Features
 
 - Interactive 3D machine visualization.
