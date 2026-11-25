@@ -18,6 +18,9 @@ The Raspberry Pi 5 hosts Ignition Gateway, CODESYS SoftPLC, and PostgreSQL. The 
 | Ignition | CODESYS | OPC UA | Commands, trajectory data, and machine feedback |
 | CODESYS | ESP32 | TCP/IP | Motion commands and trajectory transfer |
 | ESP32 | CODESYS | TCP/IP | Controller status and execution feedback |
+| Browser | Nginx | HTTP | HMI and Digital Twin access |
+| Nginx | Ignition Gateway | HTTP / WebSocket | Reverse proxy for Perspective and WebDev |
+| Digital Twin | Ignition WebDev (via Nginx) | HTTP / JSON | Live machine position and pen status |
 <img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/d1818d0e-3a1d-43ac-8bd5-81d1ba1e9999" />
 
 ## Ignition ↔ PostgreSQL
@@ -102,6 +105,45 @@ The PLC application includes dedicated communication and command-handling logic:
 | `ResponseErrorCode` | Motion controller error code |
 | `ResponseDrawingState` | Drawing execution state |
 
+## Digital Twin ↔ Ignition — HTTP API
+
+The Digital Twin version extends the communication architecture
+with an HTTP API implemented using the Ignition WebDev module.
+
+The Three.js application requests machine feedback from
+Ignition at 100 ms intervals.
+
+API endpoint:
+
+`/system/webdev/XY_Plotter_SCADA/position`
+
+| Field | Description |
+|---|---|
+| `x` | Actual X-axis position in mm |
+| `y` | Actual Y-axis position in mm |
+| `penDown` | Current pen status |
+
+The data is transferred in JSON format and used to update
+the 3D model and visualize the drawing trajectory.
+
+### Nginx — Reverse Proxy
+
+Nginx runs on the Raspberry Pi 5 and provides a common
+web access point for Ignition Perspective and the Digital Twin.
+
+Nginx is responsible for:
+
+- Serving the Digital Twin application and GLB model.
+- Forwarding HTTP requests to Ignition Gateway.
+- Supporting WebSocket connections for Perspective.
+- Providing same-origin access to the WebDev API.
+
+The Digital Twin is used for visualization only and does
+not send control commands to the PLC or ESP32.
+
+For more information, see the
+[Digital Twin documentation](../digital-twin/README.md).
+
 ## Trajectory Transfer and Buffer Management
 
 The motion controller uses a **256-point circular buffer**.
@@ -141,12 +183,15 @@ The development installation uses the following services:
 
 | Port | Service |
 |---|---|
+| 80 | Nginx HTTP — Perspective and Digital Twin access |
 | 4840 | CODESYS OPC UA |
 | 5432 | PostgreSQL (local access) |
 | 8088 | Ignition Gateway HTTP |
 | 11740 | CODESYS Runtime communication |
 
 The TCP/IP connection between CODESYS and ESP32 is configured separately within the control application.
+Nginx and the WebDev API are required for the Digital Twin version of the project. 
+The standard 2D version can be accessed directly through Ignition Gateway on port 8088.
 
 Network addresses and device-specific settings may need to be adjusted when deploying the project on another system.
 
