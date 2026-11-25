@@ -161,7 +161,7 @@ The Raspberry Pi hosts the application files and provides machine feedback throu
 
 3D rendering is performed on the client side using Three.js and WebGL in the web browser.
 
-For installation and configuration details, see the [Digital Twin documentation](../digital-twin/README.md).
+For installation and configuration details, see the [Digital Twin documentation](../../documentation/digital-twin/README.md).
 
 ## Database
 
