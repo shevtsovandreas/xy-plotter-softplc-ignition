@@ -12,8 +12,9 @@ The application communicates with CODESYS SoftPLC through OPC UA and PostgreSQL 
 
 | File | Description |
 |---|---|
-| `XY_Plotter_Gateway_Ignition-backup-20261018-1830.gwbk` | Full Ignition Gateway backup |
-| `XY_Plotter_SCADA_20261018183046.zip` | Ignition project export |
+| `XY_Plotter_Gateway_Ignition-backup-20261018-1830.gwbk` | Full Ignition Gateway backup — standard 2D version |
+| `XY_Plotter_SCADA_20261018183046.zip` | Ignition project export — standard 2D version |
+| `XY_Plotter_SCADA_2026-11-21_1857.zip` | Ignition project export — extended version with 2D and 3D visualization |
 | `tags.json` | Ignition Tag Provider export |
 
 ### Gateway Backup
@@ -24,9 +25,18 @@ It may include Gateway configuration, projects, database connections, OPC UA con
 
 Restoring a Gateway backup replaces the configuration of the target Gateway. It should therefore be used on a dedicated or test installation.
 
+**Note:** The provided Gateway backup contains the standard 2D version of the application. To use the Digital Twin,
+import the extended project version after restoring the Gateway and configure the additional Digital Twin components.
+
 ### Project Export
 
-The `.zip` file contains the **XY_Plotter_SCADA** Ignition project, including:
+Two versions of the **XY_Plotter_SCADA** Ignition project
+are provided:
+
+- **Standard Version (2D)** — original Perspective application with SVG-based drawing visualization.
+- **Digital Twin Version (2D + 3D)** — extended Perspective application with interactive Three.js visualization and an Ignition WebDev API.
+
+Both versions include:
 
 - Perspective views and reusable components
 - Python project scripts
@@ -34,6 +44,13 @@ The `.zip` file contains the **XY_Plotter_SCADA** Ignition project, including:
 - Gateway startup and shutdown scripts
 - Tag Change event scripts
 - Perspective styles and page configuration
+
+Both project versions should be imported using the project name `XY_Plotter_SCADA`.
+
+The Digital Twin version additionally requires the Ignition WebDev module, Nginx configuration, and the Digital Twin application files.
+
+For installation and configuration instructions, see the
+[Digital Twin software documentation](../digital-twin/README.md).
 
 This export is suitable for importing the application into an existing Ignition Gateway without replacing its entire configuration.
 
@@ -118,3 +135,15 @@ This method restores Gateway-level resources and configuration.
 7. Open the Perspective application and verify communication.
 
 Gateway-level connections and credentials may require separate configuration when using the project export.
+
+### Option 3 — Digital Twin Installation
+
+1. Restore the Gateway backup or configure a new Ignition Gateway.
+2. Import the Digital Twin project version as `XY_Plotter_SCADA`, replacing the standard version if already installed.
+3. Install and enable the Ignition WebDev module.
+4. Deploy the Digital Twin application files.
+5. Install and configure Nginx.
+6. Open the Perspective application through Nginx.
+7. Verify 2D and 3D visualization and live machine feedback.
+
+For detailed deployment instructions, see the [Digital Twin software documentation](../digital-twin/README.md).
