@@ -139,7 +139,7 @@ sequenceDiagram
     participant T as Ignition Tags
 
     loop Every ~100 ms
-        B->>N: HTTP GET /position
+        B->>N: GET /system/webdev/XY_Plotter_SCADA/position
         N->>W: Forward HTTP request
         W->>T: Read machine feedback
         T-->>W: X, Y, Pen status
