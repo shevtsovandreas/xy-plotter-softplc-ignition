@@ -164,6 +164,30 @@ Nginx is responsible for:
 The Digital Twin is used for visualization only and does
 not send control commands to the PLC or ESP32.
 
+```mermaid
+flowchart TD
+    B[Web Browser]
+
+    subgraph RPI[Raspberry Pi 5]
+        N[Nginx - Port 80]
+        F[Static Files]
+        I[Ignition Gateway - Port 8088]
+        H[Perspective HMI]
+        W[WebDev API]
+
+        N <-->|Static content| F
+        N <-->|HTTP / WebSocket| I
+
+        I <--> H
+        I <--> W
+
+        F --- HTML[index.html]
+        F --- GLB[model.glb]
+    end
+
+    B <-->|HTTP / WebSocket| N
+```
+
 For more information, see the
 [Digital Twin documentation](../digital-twin/README.md).
 
