@@ -1,0 +1,332 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XY Plotter — Live Digital Twin</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#334155;font:14px system-ui,Arial}#view{position:fixed;inset:0}#errorOverlay{position:absolute;bottom:12px;left:12px;background:#fff;color:#b91c1c;border-radius:6px;padding:8px 12px;display:none;font:12px system-ui;max-width:75%}</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script></head><body>
+<div id="view"></div>
+<div id="errorOverlay"></div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const API_URL = '/system/webdev/XY_Plotter_SCADA/position';
+const POLL_MS = 100;
+const PEN_DURATION_MS = 300;
+const PEN_TRAVEL_MM = 10;
+const SERVO_DOWN_DEG = 45; // Calibrate against the real mechanism
+const AXIS_X = '-x';
+const AXIS_Y = 'z';
+const AXIS_PEN = '-y';
+
+const $ = id => document.getElementById(id);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf4f4f4);
+const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, .01, 100000);
+const renderer = new THREE.WebGLRenderer({antialias: true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+$('view').appendChild(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xffffff, 0xaab3c1, 2.8));
+const light = new THREE.DirectionalLight(0xffffff, 2.1);
+light.position.set(300, 600, 500);
+scene.add(light);
+// White SCADA presentation: no reference grid.
+const DRAW_COLOR = 0x2563eb;
+const boardMaterial = new THREE.MeshStandardMaterial({color:0xe3e7ed, roughness:0.88, metalness:0.0});
+const profileMaterial = new THREE.MeshStandardMaterial({color:0x454b54, roughness:0.53, metalness:0.48});
+const darkMaterial = new THREE.MeshStandardMaterial({color:0x626a75, roughness:0.62, metalness:0.25});
+const penMaterial = new THREE.MeshStandardMaterial({color:0xf97316, roughness:0.48, metalness:0.12});
+const servoMaterial = new THREE.MeshStandardMaterial({color:0x26364b, roughness:0.65, metalness:0.1});
+function recolorModel(root) {
+  root.traverse(obj => {
+    if (!obj.isMesh) return;
+    if (!obj.geometry.getAttribute('normal')) obj.geometry.computeVertexNormals();
+    let group = obj;
+    while (group && !/^CTRL_(X_Axis|Y_Carriage|Pen|ServoArm)$/.test(group.name)) group = group.parent;
+    const material = group?.name === 'CTRL_Pen' ? penMaterial
+      : group?.name === 'CTRL_ServoArm' ? servoMaterial
+      : group?.name === 'CTRL_Y_Carriage' ? darkMaterial
+      : profileMaterial;
+    obj.material = material;
+  });
+}
+
+const ids = ['x', 'y', 'z', 'servo'];
+const names = ['CTRL_X_Axis', 'CTRL_Y_Carriage', 'CTRL_Pen', 'CTRL_ServoArm'];
+const nodes = {}, initial = {};
+let homeCamera = null, homeTarget = null;
+let modelReady = false;
+let receivedPLC = false;
+let plc = { x: 0, y: 0, penDown: false };
+let penFrom = 0, penTo = 0, penStarted = performance.now();
+// Draw the live trajectory and persist the current drawing in this browser.
+const DRAW_WIDTH_MM = 0.75;
+const MAX_DRAW_SEGMENTS = 12000;
+const MAX_SEGMENT_MM = 45; // Avoid false lines after a communication gap or coordinate jump.
+const DRAW_STALE_MS = 600;
+const STORAGE_KEY = 'xy-plotter-digital-twin-current-drawing-v1';
+const HOME_TOLERANCE_MM = 1;
+const HOME_EXIT_MM = 3; // Hysteresis: leave home before another return can clear it.
+const SAVE_DEBOUNCE_MS = 400;
+let savedSegments = [];
+let saveTimer = null;
+let homeArmed = false;
+let homeInitialized = false;
+let lastHomeSample = null;
+function isAtHome(x, y) {
+  return Math.abs(x) <= HOME_TOLERANCE_MM && Math.abs(y) <= HOME_TOLERANCE_MM;
+}
+function saveDrawing() {
+  if (saveTimer !== null) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    saveTimer = null;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(savedSegments));
+    } catch (err) {
+      console.warn('Could not save drawing in localStorage:', err);
+    }
+  }, SAVE_DEBOUNCE_MS);
+}
+function clearDrawing() {
+  inkGroup.clear();
+  savedSegments = [];
+  drawingCount = 0;
+  hasLastTip = false;
+  wasFullyDown = false;
+  if (saveTimer !== null) { clearTimeout(saveTimer); saveTimer = null; }
+  try { localStorage.removeItem(STORAGE_KEY); }
+  catch (err) { console.warn('Could not clear stored drawing:', err); }
+}
+function restoreDrawing() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const segments = JSON.parse(raw);
+    if (!Array.isArray(segments)) return;
+    for (const item of segments.slice(-MAX_DRAW_SEGMENTS)) {
+      if (!Array.isArray(item) || item.length !== 6 || !item.every(Number.isFinite)) continue;
+      addInkSegment(new THREE.Vector3(item[0], item[1], item[2]),
+                    new THREE.Vector3(item[3], item[4], item[5]), false);
+    }
+    // Never join the restored drawing to a newly received position.
+    hasLastTip = false;
+    wasFullyDown = false;
+  } catch (err) {
+    console.warn('Could not restore drawing:', err);
+  }
+}
+function checkHomeReturn(x, y) {
+  const home = isAtHome(x, y);
+  if (!homeInitialized) {
+    homeInitialized = true;
+    homeArmed = !home;
+    lastHomeSample = { x, y };
+    return;
+  }
+  if (!home && (Math.abs(x) >= HOME_EXIT_MM || Math.abs(y) >= HOME_EXIT_MM)) {
+    homeArmed = true;
+  }
+  if (home && homeArmed) {
+    clearDrawing();
+    homeArmed = false;
+  }
+  lastHomeSample = { x, y };
+}
+const inkMaterial = new THREE.MeshBasicMaterial({ color: DRAW_COLOR, depthWrite: true });
+const inkGroup = new THREE.Group();
+scene.add(inkGroup);
+const inkSegmentGeometry = new THREE.CylinderGeometry(DRAW_WIDTH_MM / 2, DRAW_WIDTH_MM / 2, 1, 6);
+const lastTip = new THREE.Vector3();
+const currentTip = new THREE.Vector3();
+const penBounds = new THREE.Box3();
+let hasLastTip = false;
+let lastDrawTime = 0;
+let lastPLCAt = 0;
+let boardTopY = 0;
+let boardFootprint = null;
+let drawingCount = 0;
+let wasFullyDown = false;
+function addInkSegment(a, b, persist = true) {
+  const direction = new THREE.Vector3().subVectors(b, a);
+  const length = direction.length();
+  if (length < 0.04 || length > MAX_SEGMENT_MM) return;
+  const mesh = new THREE.Mesh(inkSegmentGeometry, inkMaterial);
+  mesh.position.copy(a).add(b).multiplyScalar(0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+  mesh.scale.set(1, length, 1);
+  inkGroup.add(mesh);
+  drawingCount++;
+  if (persist) {
+    savedSegments.push([a.x, a.y, a.z, b.x, b.y, b.z]);
+    if (savedSegments.length > MAX_DRAW_SEGMENTS) savedSegments.shift();
+    saveDrawing();
+  }
+  if (drawingCount > MAX_DRAW_SEGMENTS) {
+    inkGroup.remove(inkGroup.children[0]);
+    drawingCount--;
+  }
+}
+// Clear the current drawing with the R key; no additional controls on the SCADA screen.
+window.addEventListener('keydown', event => {
+  if (event.key.toLowerCase() === 'r' && !event.ctrlKey && !event.altKey && !event.metaKey) {
+    clearDrawing();
+  }
+});
+
+function axisVector(code) {
+  const negative = code.startsWith('-');
+  const axis = code.replace('-', '');
+  return new THREE.Vector3(axis === 'x' ? 1 : 0, axis === 'y' ? 1 : 0, axis === 'z' ? 1 : 0)
+    .multiplyScalar(negative ? -1 : 1);
+}
+function setWorldOffset(obj, base, axis, amount) {
+  const delta = axisVector(axis).multiplyScalar(amount);
+  if (obj.parent) {
+    obj.parent.updateWorldMatrix(true, false);
+    const q = new THREE.Quaternion();
+    obj.parent.getWorldQuaternion(q);
+    delta.applyQuaternion(q.invert());
+  }
+  obj.position.copy(base.position).add(delta);
+}
+function currentPen(now) {
+  const t = THREE.MathUtils.clamp((now - penStarted) / PEN_DURATION_MS, 0, 1);
+  return THREE.MathUtils.lerp(penFrom, penTo, t);
+}
+function acceptPLC(data) {
+  if (!Number.isFinite(data.x) || !Number.isFinite(data.y) || typeof data.penDown !== 'boolean') {
+    throw new Error('Invalid JSON values (expected x, y, penDown)');
+  }
+  const now = performance.now();
+  if (!receivedPLC) {
+    // Start in the current PLC pen state without an artificial first transition.
+    penFrom = penTo = data.penDown ? PEN_TRAVEL_MM : 0;
+    penStarted = now - PEN_DURATION_MS;
+  } else if (data.penDown !== plc.penDown) {
+    penFrom = currentPen(now);
+    penTo = data.penDown ? PEN_TRAVEL_MM : 0;
+    penStarted = now;
+  }
+  checkHomeReturn(data.x, data.y);
+  plc = data;
+  receivedPLC = true;
+  lastPLCAt = now;
+
+}
+async function pollPLC() {
+  const started = performance.now();
+  try {
+    const response = await fetch(API_URL, { cache: 'no-store' });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    acceptPLC(data);
+    $('errorOverlay').style.display = 'none';
+  } catch (err) {
+    $('errorOverlay').textContent = 'PLC: ' + err.message;
+    $('errorOverlay').style.display = 'block';
+  } finally {
+    // Sequential requests: no overlapping HTTP calls.
+    setTimeout(pollPLC, Math.max(0, POLL_MS - (performance.now() - started)));
+  }
+}
+function updateModel(now) {
+  if (!modelReady || !receivedPLC) return;
+  const penMM = currentPen(now);
+  const servoDeg = (penMM / PEN_TRAVEL_MM) * SERVO_DOWN_DEG;
+  setWorldOffset(nodes.x, initial.x, AXIS_X, plc.x);
+  setWorldOffset(nodes.y, initial.y, AXIS_Y, plc.y);
+  setWorldOffset(nodes.z, initial.z, AXIS_PEN, penMM);
+  nodes.servo.quaternion.copy(initial.servo.quaternion).multiply(
+    new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), THREE.MathUtils.degToRad(servoDeg))
+  );
+  // Sample at PLC polling cadence, not on every rendered frame.
+  if (now - lastDrawTime < POLL_MS) return;
+  lastDrawTime = now;
+  const fullyDown = plc.penDown && penMM >= PEN_TRAVEL_MM - 0.05;
+  const fresh = now - lastPLCAt <= DRAW_STALE_MS;
+  if (!fullyDown || !fresh || !boardFootprint) {
+    hasLastTip = false;
+    wasFullyDown = false;
+    return;
+  }
+  // Locate the pen's horizontal footprint from its actual transformed geometry.
+  // Project onto the board's upper surface, regardless of the pen's vertical travel.
+  nodes.z.updateWorldMatrix(true, true);
+  penBounds.setFromObject(nodes.z);
+  penBounds.getCenter(currentTip);
+  currentTip.y = boardTopY + DRAW_WIDTH_MM * 0.55;
+  if (currentTip.x < boardFootprint.minX || currentTip.x > boardFootprint.maxX ||
+      currentTip.z < boardFootprint.minZ || currentTip.z > boardFootprint.maxZ) {
+    hasLastTip = false;
+    return;
+  }
+  if (hasLastTip && wasFullyDown) addInkSegment(lastTip, currentTip);
+  lastTip.copy(currentTip);
+  hasLastTip = true;
+  wasFullyDown = true;
+}
+new GLTFLoader().load('./model.glb?v=20261121-2', gltf => {
+  scene.add(gltf.scene);
+  recolorModel(gltf.scene);
+  for (let i = 0; i < 4; i++) {
+    const obj = gltf.scene.getObjectByName(names[i]);
+    if (!obj) {
+      $('errorOverlay').textContent = 'Missing: ' + names[i];
+      $('errorOverlay').style.display = 'block';
+      continue;
+    }
+    nodes[ids[i]] = obj;
+    initial[ids[i]] = {position: obj.position.clone(), quaternion: obj.quaternion.clone()};
+  }
+  const bounds = new THREE.Box3().setFromObject(gltf.scene);
+  const center = bounds.getCenter(new THREE.Vector3());
+  const size = bounds.getSize(new THREE.Vector3());
+  const max = Math.max(size.x, size.y, size.z);
+  camera.near = Math.max(.01, max / 10000);
+  camera.far = max * 100;
+  camera.position.copy(center).add(new THREE.Vector3(max * .85, max * .7, max * .95));
+  camera.lookAt(center);
+  camera.updateProjectionMatrix();
+  controls.target.copy(center);
+  controls.update();
+  homeCamera = camera.position.clone();
+  homeTarget = center.clone();
+  // A thin board slightly larger than the machine's base footprint.
+  // It sits below the lowest geometry, so it does not intersect the mechanism.
+  const margin = 14;
+  const thickness = 5;
+  const board = new THREE.Mesh(
+    new THREE.BoxGeometry(size.x + margin * 2, thickness, size.z + margin * 2),
+    boardMaterial
+  );
+  board.position.set(center.x, bounds.min.y - thickness / 2 - 1, center.z);
+  scene.add(board);
+  boardTopY = board.position.y + thickness / 2;
+  boardFootprint = {
+    minX: board.position.x - (size.x + margin * 2) / 2,
+    maxX: board.position.x + (size.x + margin * 2) / 2,
+    minZ: board.position.z - (size.z + margin * 2) / 2,
+    maxZ: board.position.z + (size.z + margin * 2) / 2
+  };
+  modelReady = ids.every(id => !!nodes[id]);
+  restoreDrawing();
+
+}, undefined, e => {
+  $('errorOverlay').textContent = 'Model load failed: ' + String(e);
+  $('errorOverlay').style.display = 'block';
+});
+function animate(now) {
+  requestAnimationFrame(animate);
+  updateModel(now);
+  controls.update();
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(animate);
+pollPLC();
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script></body></html>
