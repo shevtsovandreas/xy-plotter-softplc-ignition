@@ -126,6 +126,29 @@ API endpoint:
 The data is transferred in JSON format and used to update
 the 3D model and visualize the drawing trajectory.
 
+### Digital Twin — Data Exchange Sequence
+
+The following sequence diagram illustrates how the Digital Twin
+retrieves machine feedback and updates the 3D model.
+
+```mermaid
+sequenceDiagram
+    participant B as Browser / JavaScript
+    participant N as Nginx
+    participant W as Ignition WebDev
+    participant T as Ignition Tags
+
+    loop Every ~100 ms
+        B->>N: HTTP GET /position
+        N->>W: Forward HTTP request
+        W->>T: Read machine feedback
+        T-->>W: X, Y, Pen status
+        W-->>N: JSON response
+        N-->>B: JSON response
+        Note over B: Update 3D model using Three.js
+    end
+```
+
 ### Nginx — Reverse Proxy
 
 Nginx runs on the Raspberry Pi 5 and provides a common
